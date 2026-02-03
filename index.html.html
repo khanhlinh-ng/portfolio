@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nguyen Khanh Linh — Content Marketer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #f5f0eb;
+    --warm-white: #faf8f5;
+    --text-dark: #2c2420;
+    --text-mid: #6b5b52;
+    --text-light: #9a8a7f;
+    --accent: #c17f59;
+    --accent-soft: #dbb99a;
+    --shadow: rgba(44,36,32,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(250,248,245,0.92);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px var(--shadow);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; color: var(--text-dark);
+    text-decoration: none; font-weight: 500;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-size: 12px; color: var(--text-mid); text-decoration: none;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    transition: color 0.3s ease; font-weight: 500;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; position: relative;
+    background: var(--warm-white); padding: 60px 24px;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 20% 80%, rgba(193,127,89,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 600px at 80% 20%, rgba(138,154,126,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 400px at 60% 70%, rgba(219,185,154,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; animation: fadeUp 1.2s ease both; }
+  .hero-tag {
+    display: inline-block; font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 28px; font-weight: 500;
+  }
+  .hero-tag::before, .hero-tag::after {
+    content: ''; display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--accent-soft); vertical-align: middle; margin: 0 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 7vw, 68px);
+    font-weight: 400; line-height: 1.15; color: var(--text-dark); margin-bottom: 12px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 15px; color: var(--text-mid);
+    max-width: 480px; margin: 24px auto 0;
+    font-weight: 300; line-height: 1.8;
+  }
+  .hero-links { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-block; padding: 12px 28px; border-radius: 40px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    text-decoration: none; transition: all 0.35s ease; cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--text-dark); color: #fff; }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(193,127,89,0.3); }
+  .btn-ghost { border: 1.5px solid var(--accent-soft); color: var(--text-mid); background: transparent; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* SCROLL HINT */
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--text-light); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .scroll-hint .line {
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, transparent, var(--accent-soft));
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 24px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 400; color: var(--text-dark); margin-bottom: 48px; line-height: 1.3;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* ABOUT */
+  .philosophy { background: var(--warm-white); }
+  .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .philosophy-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; line-height: 1.6; color: var(--text-dark);
+    font-style: italic; border-left: 2px solid var(--accent-soft);
+    padding-left: 28px; margin-bottom: 24px;
+  }
+  .philosophy-quote span {
+    display: block; font-family: 'DM Sans', sans-serif; font-style: normal;
+    font-size: 12px; color: var(--text-light); margin-top: 16px; letter-spacing: 1px;
+  }
+  .phil-text { font-size: 14px; color: var(--text-mid); font-weight: 300; line-height: 1.9; }
+  .phil-card {
+    background: var(--cream); border-radius: 18px; padding: 28px; margin-bottom: 14px;
+    border: 1px solid rgba(193,127,89,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .phil-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); }
+  .phil-card h4 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; margin-bottom: 6px; color: var(--text-dark); }
+  .phil-card p { font-size: 13.5px; color: var(--text-mid); font-weight: 300; }
+
+  /* TIMELINE */
+  .experience { background: var(--cream); }
+  .timeline { position: relative; padding-left: 36px; }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 8px; top: 8px; bottom: 8px; width: 1px;
+    background: linear-gradient(to bottom, var(--accent-soft), transparent);
+  }
+  .timeline-item { position: relative; margin-bottom: 44px; }
+  .timeline-item .dot {
+    position: absolute; left: -32px; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 4px rgba(193,127,89,0.15);
+  }
+  .timeline-item .date { font-size: 11px; color: var(--text-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; }
+  .timeline-item h3 { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 500; color: var(--text-dark); }
+  .timeline-item .company { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 8px; }
+  .timeline-item p { font-size: 13.5px; color: var(--text-mid); font-weight: 300; max-width: 620px; line-height: 1.75; }
+  .timeline-item .tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 11px; background: rgba(193,127,89,0.08); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+
+  /* SKILLS */
+  .skills { background: var(--warm-white); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .skill-card {
+    background: var(--cream); border: 1px solid rgba(193,127,89,0.1);
+    border-radius: 18px; padding: 30px 26px;
+    transition: all 0.35s ease; position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+  }
+  .skill-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px var(--shadow); }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-icon { font-size: 22px; margin-bottom: 14px; }
+  .skill-card h4 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
+  .skill-card p { font-size: 12.5px; color: var(--text-mid); font-weight: 300; line-height: 1.6; }
+
+  /* WORKS */
+  .works { background: var(--cream); }
+  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .work-card {
+    background: var(--warm-white); border: 1px solid rgba(193,127,89,0.1);
+    border-radius: 18px; padding: 30px;
+    text-decoration: none; color: inherit;
+    transition: all 0.35s ease; display: block;
+  }
+  .work-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px var(--shadow); border-color: var(--accent-soft); }
+  .work-card .work-type { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 10px; }
+  .work-card h4 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
+  .work-card p { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.65; }
+  .work-card .arrow { display: inline-block; margin-top: 14px; font-size: 18px; color: var(--accent-soft); transition: transform 0.3s ease, color 0.3s ease; }
+  .work-card:hover .arrow { transform: translateX(4px); color: var(--accent); }
+
+  /* ACHIEVEMENTS */
+  .achievements { background: var(--warm-white); }
+  .ach-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .ach-card {
+    text-align: center; background: var(--cream); border-radius: 20px;
+    padding: 40px 24px; border: 1px solid rgba(193,127,89,0.1);
+    transition: all 0.35s ease;
+  }
+  .ach-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); }
+  .ach-card .ach-icon { font-size: 28px; margin-bottom: 16px; }
+  .ach-card h4 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; }
+  .ach-card p { font-size: 12.5px; color: var(--text-mid); font-weight: 300; line-height: 1.65; }
+  .ach-card a { display: inline-block; margin-top: 12px; font-size: 11px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .ach-card a:hover { text-decoration: underline; }
+
+  /* CONTACT */
+  .contact { background: var(--cream); text-align: center; }
+  .contact-inner { max-width: 560px; margin: 0 auto; }
+  .contact-inner p { font-size: 15px; color: var(--text-mid); font-weight: 300; margin-bottom: 36px; line-height: 1.8; }
+  .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .contact-links a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 40px;
+    border: 1.5px solid rgba(193,127,89,0.25);
+    color: var(--text-mid); text-decoration: none;
+    font-size: 13px; font-weight: 400; transition: all 0.3s ease;
+  }
+  .contact-links a:hover { border-color: var(--accent); color: var(--accent); background: rgba(193,127,89,0.05); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 40px 24px; background: var(--text-dark); color: var(--text-light); font-size: 12px; letter-spacing: 1px; }
+  footer a { color: var(--accent-soft); text-decoration: none; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 720px) {
+    .philosophy-grid { grid-template-columns: 1fr; gap: 36px; }
+    .works-grid { grid-template-columns: 1fr; }
+    .ach-row { grid-template-columns: 1fr; }
+    nav { padding: 16px 22px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 10px; letter-spacing: 1px; }
+    section { padding: 70px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Khanh Linh Nguyen (Jasmine)</a>
+  <ul class="nav-links">
+    <li><a href="#philosophy">About</a></li>
+    <li><a href="#experience">Journey</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#works">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Content Marketer | Storyteller | Reporter | Editor | WRITER</div>
+    <h1>Words are how<br>we <em>connect</em></h1>
+    <p class="hero-sub">
+      I turn complex ideas into stories people want to read, listen to, and share — through content strategy, SEO writing, and thoughtful audience engagement.
+    </p>
+    <div class="hero-links">
+      <a href="#works" class="btn btn-primary">See My Work</a>
+      <a href="#contact" class="btn btn-ghost">Say Hello</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ABOUT ME -->
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <div class="philosophy-grid">
+      <div>
+        <div class="section-label">About Me</div>
+        <div class="philosophy-quote">
+          Communication is simple: it is about shipping information from one person to another, one place to the next.
+          <span>— My belief</span>
+        </div>
+        <p class="phil-text">
+          With over eight years across journalism, content marketing, and editorial work, I have learned that the best writing doesn't shout — it whispers, and people lean in to listen. I bring that same quiet intention to every piece of content I create.
+        </p>
+      </div>
+      <div>
+        <div class="phil-card">
+          <h4>🌿 Mindful Content</h4>
+          <p>I craft content with intention — each word chosen not just for search engines, but for the human reading it.</p>
+        </div>
+        <div class="phil-card">
+          <h4>📊 Strategy First</h4>
+          <p>Before writing a single sentence, I research, plan, and align every piece with a clear content and SEO strategy.</p>
+        </div>
+        <div class="phil-card">
+          <h4>🌐 Cross-Cultural</h4>
+          <p>Fluent in storytelling across Vietnamese and English — I help brands connect with audiences that span cultures.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER JOURNEY -->
+<section class="experience" id="experience">
+  <div class="container">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">A story told<br>in <em>chapters</em></h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Sep 2023 – Jan 2025</div>
+        <div class="company">AhaSlides Vietnam Co., Ltd.</div>
+        <h3>Content Marketer · English SEO Specialist</h3>
+        <p>As an SEO content specialist at a global SaaS company, I managed the full content lifecycle — from keyword research and content planning to writing, editing, and launching satellite websites that hit 10,000 impressions within their first month. I coordinated a team of external contributors and also helped launch the company's podcast channel.</p>
+        <div class="tags">
+          <span class="tag">SEO Strategy</span>
+          <span class="tag">Content Planning</span>
+          <span class="tag">SaaS</span>
+          <span class="tag">Contributor Management</span>
+          <span class="tag">Podcast</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Apr 2020 – Mar 2023</div>
+        <div class="company">Jugoa Media / Emdep.vn</div>
+        <h3>Editor · Head of Food &amp; Lifestyle Section</h3>
+        <p>Planned content, managed contributors, sourced and wrote stories, and translated foreign articles for the Food and Lifestyle sections. I also illustrated articles with visuals crafted in Canva, keeping the section's voice warm and consistent throughout.</p>
+        <div class="tags">
+          <span class="tag">Editorial</span>
+          <span class="tag">Content Strategy</span>
+          <span class="tag">Team Management</span>
+          <span class="tag">Translation</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Apr 2019 – Apr 2020</div>
+        <div class="company">FPT Corporation</div>
+        <h3>Reporter · Internal Communications</h3>
+        <p>Covered business, technology, and culture stories for FPT's internal newspaper. I also recorded voice-overs for promotional content and helped coordinate internal events.</p>
+        <div class="tags">
+          <span class="tag">Journalism</span>
+          <span class="tag">Voice-Over</span>
+          <span class="tag">Corporate Comms</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Jun 2018 – Jun 2019</div>
+        <div class="company">Vietnamnet iCom</div>
+        <h3>Editor &amp; Radio MC</h3>
+        <p>Wrote radio scripts, produced and edited programs, and recorded voice prompts for major telecoms. Also hosted live-streamed content and contributed to brand communications.</p>
+        <div class="tags">
+          <span class="tag">Radio Production</span>
+          <span class="tag">Scriptwriting</span>
+          <span class="tag">Live Hosting</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Feb 2017 – Jun 2018</div>
+        <div class="company">Gigatum Vietnam</div>
+        <h3>Content Writer</h3>
+        <p>Created deal content and PR articles for the Clingme app, and contributed to brand communication campaigns for the southern region.</p>
+        <div class="tags">
+          <span class="tag">PR Writing</span>
+          <span class="tag">Brand Communication</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="dot"></div>
+        <div class="date">Jan 2017 – Jan 2022 · Part-time</div>
+        <div class="company">Voice of Vietnam Radio (VOV3)</div>
+        <h3>Broadcaster &amp; Editor</h3>
+        <p>Alongside my full-time roles, I spent five years collaborating with VOV3 — scripting, hosting, and editing two programs: International Music and Rock Viet Airplay. A quiet passion that kept my voice sharp and my storytelling grounded.</p>
+        <div class="tags">
+          <span class="tag">Radio Broadcasting</span>
+          <span class="tag">Program Hosting</span>
+          <span class="tag">Scriptwriting</span>
+          <span class="tag">Audio Editing</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="section-label">What I Bring</div>
+    <h2 class="section-title">Skills &amp; <em>craft</em></h2>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-icon">✍️</div>
+        <h4>SEO Content Writing</h4>
+        <p>Keyword research, long-form articles, blog posts, and content that ranks — written for both Google and real readers.</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">📈</div>
+        <h4>Content Strategy</h4>
+        <p>Content planning, competitor analysis, metrics tracking, and building complete content ecosystems for brands.</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🖊️</div>
+        <h4>Editorial &amp; Journalism</h4>
+        <p>Interviewing, reporting, translating, and editing — with experience across lifestyle, culture, business, and tech.</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🎙️</div>
+        <h4>Voice &amp; Audio</h4>
+        <p>Professional voice-overs, radio hosting, podcast production, and audio editing with a calm, natural presence.</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <h4>Design &amp; Visuals</h4>
+        <p>Graphic design for social media and print using Canva, plus video editing with CapCut for branded content.</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🌏</div>
+        <h4>Bilingual Communication</h4>
+        <p>Fluent in Vietnamese and English — comfortable creating, translating, and adapting content across both languages.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+<section class="works" id="works">
+  <div class="container">
+    <div class="section-label">Selected Work</div>
+    <h2 class="section-title">Stories I've <em>told</em></h2>
+    <div class="works-grid">
+
+      <a href="https://ahaslides.com/blog/subscription-based-pricing/" target="_blank" class="work-card">
+        <div class="work-type">SEO · Guide/How-to</div>
+        <h4>Product-Led SEO Articles</h4>
+        <p>English SEO articles for a global SaaS platform — researched, planned, written, and optimized from the ground up.</p>
+        <span class="arrow">→</span>
+      </a>
+      
+      <a href="https://habitify.me/blog/1-percent-better-every-day" target="_blank" class="work-card">
+        <div class="work-type">SEO · Listicle</div>
+        <h4>Top-of-Funnel SEO Articles</h4>
+        <p>Top-of-Funnel SEO article bridging the gap between brand philosophy and user intent to drive organic growth.</p>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="https://ahaslides.com/blog/interactive-training/" target="_blank" class="work-card">
+        <div class="work-type">SEO · Ultimate Guide</div>
+        <h4>Long-form Content</h4>
+        <p>In-depth long-form content pieces designed to educate, engage, and earn organic search visibility.</p>
+        <span class="arrow">→</span>
+      </a>
+      
+      <a href="https://habitify.me/blog/apps-for-habit-tracking" target="_blank" class="work-card">
+        <div class="work-type">SEO · Alternatives Article</div>
+        <h4>Middle-of-Funnel SEO Articles</h4>
+        <p>A transparent competitor analysis that helps users make informed choices while positioning our product as the top solution.</p>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="https://chungta.vn/nguoi-fpt/b-fpt-under-35-nguyen-thuong-tuong-minh-da-lam-phai-den-cung-b-1128920.html" target="_blank" class="work-card">
+        <div class="work-type">Journalism · Long-Form</div>
+        <h4>FPT Feature Story</h4>
+        <p>An in-depth feature story from FPT's internal newspaper — researched, interviewed, and written with editorial care.</p>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="https://chungta.vn/nguoi-fpt/nguoi-vioedu-dich-covid-19-la-luc-ca-nuoc-can-chung-toi-nhat-1129198.html" target="_blank" class="work-card">
+        <div class="work-type">Journalism · Portrait</div>
+        <h4>Corporate Branding</h4>
+        <p>A mission-driven feature story that humanizes the VioEdu brand by showcasing the team’s dedication during the national Covid-19 crisis.</p>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="https://emdep.vn/cau-chuyen-cuoc-song/nguoi-me-tuong-nho-con-bang-cach-gieo-mam-thien-dong-luc-song-cua-toi-la-tro-thanh-nguoi-me-khien-con-tu-hao-20220630143745076.htm" target="_blank" class="work-card">
+        <div class="work-type">Journalism · Long-form</div>
+        <h4>Inspirational Storytelling</h4>
+        <p>A heartfelt human interest story — the kind of writing that stays with you long after you've finished reading.</p>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="https://chungta.vn/an-choi/3-000-nguoi-len-dong-cung-rockfest-2019-1128551.html" target="_blank" class="work-card">
+        <div class="work-type">Journalism · News</div>
+        <h4>Event Coverage</h4>
+        <p>Live event coverage — capturing the energy and story of the moment in real time.</p>
+        <span class="arrow">→</span>
+      </a>
+
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="achievements" id="achievements">
+  <div class="container">
+    <div class="section-label">Beyond Work</div>
+    <h2 class="section-title">Things I'm <em>proud of</em></h2>
+    <div class="ach-row">
+
+      <div class="ach-card">
+        <div class="ach-icon">🌿</div>
+        <h4>The Quieter</h4>
+        <p>My lifestyle blog about quiet living and mindfulness — ranked #1 on Google for "how to live a quiet life in a noisy world."</p>
+        <a href="https://thequieter.com" target="_blank">Visit the blog →</a>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">📖</div>
+        <h4>Published Author</h4>
+        <p>Wrote and published a book under the pen name "Vy Cam" — reprinted three times since its 2016 release.</p>
+        <a href="https://vietnamnet.vn/mc-vy-cam-ke-chuyen-cang-truong-thanh-cang-co-don-349086.html" target="_blank">Press coverage →</a>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-icon">🎧</div>
+        <h4>Vy Cam Radio</h4>
+        <p>A podcast with over 21,700 listeners and 90,000 streams on Spotify alone — reflections on life, told gently.</p>
+        <a href="https://open.spotify.com/show/5clNUHFer9sEnZq9qijEZh?si=7b2f86b94c964d42&nd=1&dlsi=632584a3cbce40c2" target="_blank">Listen →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label">Let's Connect</div>
+      <h2 class="section-title" style="margin-bottom: 20px;">Let's create<br>something <em>meaningful</em></h2>
+      <p>
+        Whether you have a project in mind or simply want to say hello — I would love to hear from you. Good stories start with a conversation.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:vycam1709@gmail.com">✉️ Email</a>
+        <a href="https://www.linkedin.com/in/linhnk1709/" target="_blank">💼 LinkedIn</a>
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Nguyen Khanh Linh &nbsp;·&nbsp; Hanoi, Vietnam &nbsp;·&nbsp; <a href="https://thequieter.com" target="_blank">thequieter.com</a></p>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
